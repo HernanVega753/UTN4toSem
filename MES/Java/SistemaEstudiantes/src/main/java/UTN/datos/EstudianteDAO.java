@@ -52,6 +52,7 @@ public class EstudianteDAO {
         ResultSet rs;
         Connection con = getConnection();
         String sql = "SELECT * FROM estudiantes2024 WHERE idestudiantes=?";
+
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, estudiante.getIdEstudiante());
@@ -131,13 +132,33 @@ public class EstudianteDAO {
         return false;
     } //Fin método modificarEstudiante
 
+    //Metodo eliminar estudiante
+    public boolean eliminarEstudiante(Estudiante estudiante){
+        PreparedStatement ps;
+        Connection con = getConnection();
+        String sql = "DELETE FROM estudiantes2024 WHERE idestudiantes=?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, estudiante.getIdEstudiante());
+            ps.execute();
+            return true;
+        } catch (Exception e){
+            System.out.println("Error al eliminar el estudiante: "+e.getMessage());
+
+        } //Fin de try catch
+        finally {
+            try {
+                con.close();
+            } catch (Exception e){
+                System.out.println("Error al cerrar conexión");
+            } //Fin de try catch
+        } //Fin de finally
+        return false;
+    } //Fin de método eliminarEstudiante
+
+
     public static void main(String[] args) {
         var estudianteDao = new EstudianteDAO();
-
-        //Listar los estudiantes
-        System.out.println("Listado de estudiantes: ");
-        List<Estudiante> estudiantes = estudianteDao.listarEstudiantes();
-        estudiantes.forEach(System.out::println); //Función lambda para imprimir
 
         //Buscar por id
         /*var estudiante1 = new Estudiante(1);
@@ -154,7 +175,7 @@ public class EstudianteDAO {
         if(agregado)
             System.out.println("Estudiante agregado: "+nuevoEstudiante);
         else
-            System.out.println("No se ha agregado el estudiante: "+nuevoEstudiante);*/
+            System.out.println("No se ha agregado el estudiante: "+nuevoEstudiante);
 
         //Modificar estudiante
         var estudianteModificado = new Estudiante(1, "Juan Carlos", "Juarez", "5452532", "juan@mail.com");
@@ -162,10 +183,23 @@ public class EstudianteDAO {
         if(modificado)
             System.out.println("Estudiante modificado: "+estudianteModificado);
         else
-            System.out.println("Estudiante no modificado: "+estudianteModificado);
+            System.out.println("Estudiante no modificado: "+estudianteModificado);*/
 
-    }
 
-} //Fin clase
+        //Eliminar estudiante con id 3
+        var estudianteEliminar = new Estudiante(4);
+        var eliminado = estudianteDao.eliminarEstudiante(estudianteEliminar);
+        if (eliminado)
+            System.out.println("Estudiante eliminado: "+estudianteEliminar);
+        else
+            System.out.println("No se eliminó estudiante: "+estudianteEliminar);
+
+        //Listar los estudiantes
+        System.out.println("Listado de estudiantes: ");
+        List<Estudiante> estudiantes = estudianteDao.listarEstudiantes();
+        estudiantes.forEach(System.out::println); //Función lambda para imprimir
+    } //Fin del main
+
+} //Fin estudianteDao
 
 
