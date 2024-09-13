@@ -12,7 +12,165 @@ body {
     font-family: Arial, sans-serif;
     background-color: var(--color-background);
     color: var(--color-text);
+    margin: 0;
+    padding: 0;
 }
+
+/* Header Styles */
+header {
+    background-color: var(--color-secondary);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+}
+
+.logo-container img {
+    max-height: 50px;
+}
+
+.navbar ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+}
+
+.navbar li {
+    margin-left: 20px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+    color: var(--color-accent);
+}
+
+/* Banner Styles */
+.banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 50px 20px;
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.banner-text {
+    flex: 1;
+}
+
+.banner-text h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.banner-image {
+    flex: 1;
+    text-align: right;
+}
+
+.banner-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Products Section */
+.products {
+    padding: 50px 20px;
+}
+
+.products h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Services Section */
+.services {
+    padding: 50px 20px;
+    background-color: var(--color-secondary);
+    color: white;
+}
+
+.services h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.service-cards {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.service-card {
+    background-color: white;
+    color: var(--color-text);
+    padding: 20px;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px var(--box-shadow-color);
+    width: calc(50% - 20px);
+    transition: transform 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Contact Section */
+.contact {
+    padding: 50px 20px;
+}
+
+.contact h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.contact form {
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.contact input,
+.contact textarea {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.contact button {
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.contact button:hover {
+    background-color: var(--color-hover-primary);
+}
+
+/* Footer Styles */
+footer {
+    background-color: var(--color-secondary);
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Existing styles... */
 
 .card-products-container {
     margin: 5vh auto;
@@ -70,9 +228,9 @@ body {
 
 .cart-btn {
     position: fixed;
-    top: 90vh;
+    top: 85vh;
     right: 40px;
-    background-color: var(--color-secondary);
+    background-color: var(--color-accent);
     color: white;
     padding: 12px;
     border-radius: 50%;
@@ -98,7 +256,7 @@ body {
     right: 33px;
     color: #fff;
     text-align: center;
-    background-color: var(--color-accent);
+    background-color: var(--color-secondary);
     padding: 4px;
     border-radius: 50%;
     height: 20px;
@@ -265,6 +423,7 @@ body {
     background-color: var(--color-hover-primary);
     border-color: var(--color-hover-primary);
 }
+
 .card-products button:active {
     background-color: var(--color-accent);
     transform: scale(0.98);
@@ -285,12 +444,20 @@ body {
     transition: transform 0.1s ease, background-color 0.1s ease;
 }
 
-
 @media only screen and (max-width: 500px) {
     .product-img {
         display: none;
     }
     .modal-body {
         margin: 5px;
+    }
+    .banner {
+        flex-direction: column;
+    }
+    .banner-image {
+        margin-top: 20px;
+    }
+    .service-card {
+        width: 100%;
     }
 }
