@@ -2,6 +2,7 @@ package utn.tienda_libros.vista;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import utn.tienda_libros.modelo.Libro;
 import utn.tienda_libros.servicio.LibroServicio;
 
 import javax.swing.*;
@@ -13,12 +14,20 @@ public class LibroFrom extends JFrame {
     LibroServicio libroServicio;
     private JPanel panel;
     private JTable tablaLibros;
+    private JTextField libroTexto;
+    private JTextField autorTextoTextField;
+    private JTextField precioTextoTextField;
+    private JTextField existenciasTextoTextField;
+    private JButton agregarButton;
+    private JButton modificarButton;
+    private JButton eliminarButton;
     private DefaultTableModel tablaModeloLibros;
 
     @Autowired
     public LibroFrom(LibroServicio libroServicio){
         this.libroServicio = libroServicio;
         iniciarForma();
+        agregarButton.addActionListener(e ->  agregarLibro());
     }
 
     private void iniciarForma(){
@@ -32,6 +41,40 @@ public class LibroFrom extends JFrame {
         int x = (tamanioPantalla.width - getWidth()/2);
         int y = (tamanioPantalla.height - getHeight()/2);
         setLocation(x, y);
+    }
+
+    private void agregarLibro(){
+        //Leer los valores del formulario
+        if(libroTexto.getText().equals("")){
+            mostrarMensaje("Ingresa el nombre del libro");
+            libroTexto.requestFocusInWindow();
+            return;
+        }
+        var nombreLibro = libroTexto.getText();
+        var autor = autorTextoTextField.getText();
+        var precio = Double.parseDouble(precioTextoTextField.getText());
+        var existencias = Integer.parseInt(existenciasTextoTextField.getText());
+        // Creamos el objeto libro
+        var libro = new Libro(null, nombreLibro, autor, precio, existencias);
+        //libro.setNombreLibro(nombreLibro);
+        //libro.setAutor(autor);
+        //libro.setPrecio(precio);
+        //libro.setExistencias(existencias);
+        this.libroServicio.guardarLibro(libro);
+        mostrarMensaje("Se agregó el libro...");
+        limpiarFormulario();
+        listarLibros();
+    }
+
+    private void limpiarFormulario(){
+        libroTexto.setText("");
+        autorTextoTextField.setText("");
+        precioTextoTextField.setText("");
+        existenciasTextoTextField.setText("");
+    }
+
+    private void mostrarMensaje(String mensaje){
+        JOptionPane.showMessageDialog(this, mensaje);
     }
 
     private void createUIComponents() {
