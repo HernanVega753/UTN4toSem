@@ -54,31 +54,73 @@ public class LibroFrom extends JFrame {
         Dimension tamanioPantalla = toolkit.getDefaultToolkit().getScreenSize();
         int x = (tamanioPantalla.width - getWidth()/2);
         int y = (tamanioPantalla.height - getHeight()/2);
-        setLocation(x, y);
+        setLocationRelativeTo(null); // Hace que la ventana aparezca en el medio
     }
 
     private void agregarLibro(){
-        //Leer los valores del formulario
-        if(libroTexto.getText().equals("")){
-            mostrarMensaje("Ingresa el nombre del libro");
+        // Verificar que los campos no estén vacíos
+        if(libroTexto.getText().trim().equals("")){
+            mostrarMensaje("Por favor, ingresa el nombre del libro.");
             libroTexto.requestFocusInWindow();
             return;
         }
+
+        if(autorTextoTextField.getText().trim().equals("")){
+            mostrarMensaje("Por favor, ingresa el nombre del autor.");
+            autorTextoTextField.requestFocusInWindow();
+            return;
+        }
+
+        if(precioTextoTextField.getText().trim().equals("")){
+            mostrarMensaje("Por favor, ingresa un valor para el precio.");
+            precioTextoTextField.requestFocusInWindow();
+            return;
+        }
+
+        if(existenciasTextoTextField.getText().trim().equals("")){
+            mostrarMensaje("Por favor, ingresa un valor para las existencias.");
+            existenciasTextoTextField.requestFocusInWindow();
+            return;
+        }
+
+        double precio;
+        int existencias;
         var nombreLibro = libroTexto.getText();
         var autor = autorTextoTextField.getText();
-        var precio = Double.parseDouble(precioTextoTextField.getText());
-        var existencias = Integer.parseInt(existenciasTextoTextField.getText());
+
+        // Validación de que el precio y existencias sean numéricos
+        try {
+            precio = Double.parseDouble(precioTextoTextField.getText().trim());
+            existencias = Integer.parseInt(existenciasTextoTextField.getText().trim());
+        } catch (NumberFormatException ex) {
+            mostrarMensaje("Por favor, ingresa valores numéricos válidos para el precio y las existencias.");
+            return;
+        }
+
+        // Validar que precio y existencias sean mayores a 0
+        if(precio <= 0){
+            mostrarMensaje("El precio debe ser mayor a 0.");
+            precioTextoTextField.requestFocusInWindow();
+            return;
+        }
+
+        if(existencias <= 0){
+            mostrarMensaje("Las existencias deben ser mayores a 0.");
+            existenciasTextoTextField.requestFocusInWindow();
+            return;
+        }
+
         // Creamos el objeto libro
         var libro = new Libro(null, nombreLibro, autor, precio, existencias);
-        //libro.setNombreLibro(nombreLibro);
-        //libro.setAutor(autor);
-        //libro.setPrecio(precio);
-        //libro.setExistencias(existencias);
-        this.libroServicio.guardarLibro(libro);
-        mostrarMensaje("Se agregó el libro...");
+
+        // Guardamos el libro usando el servicio
+        libroServicio.guardarLibro(libro);
+        mostrarMensaje("Se agregó el libro satisfactoriamente.");
+
         limpiarFormulario();
         listarLibros();
     }
+
 
     private void cargarLibroSeleccionado(){
         // Los índices de las columnas inician en 0
@@ -102,42 +144,89 @@ public class LibroFrom extends JFrame {
     }
 
     private void modificarLibro(){
-        if (this.idTexto.equals("")){
-            mostrarMensaje("Debes seleccionar un registro en la tabla");
+        if(idTexto.getText().equals("")){
+            mostrarMensaje("Debes seleccionar un registro en la tabla.");
+            return;
+        }
 
+        // Verificar que los campos no estén vacíos
+        if(libroTexto.getText().trim().equals("")){
+            mostrarMensaje("Por favor, ingresa el nombre del libro.");
+            libroTexto.requestFocusInWindow();
+            return;
         }
-        else {
-            // Verificamos que nombre del libro no sea nulo
-            if (libroTexto.getText().equals("")){
-                mostrarMensaje("Digite nombre del libro");
-                libroTexto.requestFocusInWindow();
-                return;
-            }
-            // Llenamos el objeto libro a actualizar
-            int idLibro = Integer.parseInt(idTexto.getText());
-            var nombreLibro = libroTexto.getText();
-            var autor = autorTextoTextField.getText();
-            var precio = Double.parseDouble(precioTextoTextField.getText());
-            var existencias = Integer.parseInt(existenciasTextoTextField.getText());
-            var libro = new Libro(idLibro,nombreLibro, autor, precio, existencias);
-            libroServicio.guardarLibro(libro);
-            mostrarMensaje("El libro se modificó satisfactoriamente");
-            limpiarFormulario();
-            listarLibros();
+
+        if(autorTextoTextField.getText().trim().equals("")){
+            mostrarMensaje("Por favor, ingresa el nombre del autor.");
+            autorTextoTextField.requestFocusInWindow();
+            return;
         }
+
+        if(precioTextoTextField.getText().trim().equals("")){
+            mostrarMensaje("Por favor, ingresa un valor para el precio.");
+            precioTextoTextField.requestFocusInWindow();
+            return;
+        }
+
+        if(existenciasTextoTextField.getText().trim().equals("")){
+            mostrarMensaje("Por favor, ingresa un valor para las existencias.");
+            existenciasTextoTextField.requestFocusInWindow();
+            return;
+        }
+
+        double precio;
+        int existencias;
+        var nombreLibro = libroTexto.getText();
+        var autor = autorTextoTextField.getText();
+
+        // Validación de que el precio y existencias sean numéricos
+        try {
+            precio = Double.parseDouble(precioTextoTextField.getText().trim());
+            existencias = Integer.parseInt(existenciasTextoTextField.getText().trim());
+        } catch (NumberFormatException ex) {
+            mostrarMensaje("Por favor, ingresa valores numéricos válidos para el precio y las existencias.");
+            return;
+        }
+
+        // Validar que precio y existencias sean mayores a 0
+        if(precio <= 0){
+            mostrarMensaje("El precio debe ser mayor a 0.");
+            precioTextoTextField.requestFocusInWindow();
+            return;
+        }
+
+        if(existencias <= 0){
+            mostrarMensaje("Las existencias deben ser mayores a 0.");
+            existenciasTextoTextField.requestFocusInWindow();
+            return;
+        }
+
+        // Actualizamos el libro
+        int idLibro = Integer.parseInt(idTexto.getText());
+        var libro = new Libro(idLibro, nombreLibro, autor, precio, existencias);
+        libroServicio.guardarLibro(libro);
+
+        mostrarMensaje("El libro se modificó satisfactoriamente.");
+        limpiarFormulario();
+        listarLibros();
     }
+
 
     private void eliminarLibro(){
         var renglon = tablaLibros.getSelectedRow();
         if (renglon != -1){
-            String idLibro =
-                    tablaLibros.getModel().getValueAt(renglon, 0).toString();
-            var libro = new Libro();
-            libro.setIdLibro(Integer.parseInt(idLibro));
-            libroServicio.eliminarLibro(libro);
-            mostrarMensaje("Libro "+idLibro+" eliminado");
-            limpiarFormulario();
-            listarLibros();
+            int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar este libro? \n"+ tablaLibros.getModel().getValueAt(renglon, 1).toString(), "Confirmación", JOptionPane.YES_NO_OPTION);
+            if (confirmacion == JOptionPane.YES_OPTION){
+                String idLibro =
+                        tablaLibros.getModel().getValueAt(renglon, 0).toString();
+                var libro = new Libro();
+                libro.setIdLibro(Integer.parseInt(idLibro));
+                libroServicio.eliminarLibro(libro);
+                mostrarMensaje("Libro "+idLibro+" eliminado");
+                limpiarFormulario();
+                listarLibros();
+            }
+
         }
         else {
             mostrarMensaje("No se ha seleccionado ningún nombre de la tabla");
