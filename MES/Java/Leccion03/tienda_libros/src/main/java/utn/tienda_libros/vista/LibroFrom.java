@@ -59,7 +59,7 @@ public class LibroFrom extends JFrame {
 
     private void agregarLibro(){
         // Verificar que los campos no estén vacíos
-        if(libroTexto.getText().trim().equals("")){
+        if(libroTexto.getText().trim().equals("")){ // .trim() elimina los espacios en blanco
             mostrarMensaje("Por favor, ingresa el nombre del libro.");
             libroTexto.requestFocusInWindow();
             return;

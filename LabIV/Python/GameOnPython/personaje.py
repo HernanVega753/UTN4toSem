@@ -29,6 +29,7 @@ while running:
         player_pos.y += speed
     if keys[pg.K_UP]:  # Tecla izquierda
         player_pos.y -= speed
+
     # Limpiar pantalla
     screen.fill('green')
 
